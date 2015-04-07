@@ -1,0 +1,9 @@
+Error, "phase1/check2/dec-op-bool-invalid.rc": 
+  Incompatible type bool to operator --, equivalent to int, float, or pointer expected.
+Error, "phase1/check2/dec-op-bool-invalid.rc": 
+  Incompatible type bool to operator --, equivalent to int, float, or pointer expected.
+Error, "phase1/check2/dec-op-bool-invalid.rc": 
+  Incompatible type bool to operator --, equivalent to int, float, or pointer expected.
+Error, "phase1/check2/dec-op-bool-invalid.rc": 
+  Incompatible type bool to operator --, equivalent to int, float, or pointer expected.
+Compile: failure.

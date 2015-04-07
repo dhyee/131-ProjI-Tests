@@ -1,0 +1,6 @@
+function : void foo() {
+    true--;
+    --true;
+    false--;
+    --false;
+}

@@ -1,0 +1,13 @@
+function : void foo() {
+    float float_x= 1.0;
+    float_x++;
+    ++float_x;
+    float_x = float_x++ + ++float_x;
+
+    int int_x = 1;
+    int_x++;
+    ++int_x;
+
+    int_x = int_x++ + ++int_x;
+
+}

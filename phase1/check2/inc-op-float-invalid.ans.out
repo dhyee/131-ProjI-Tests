@@ -1,0 +1,5 @@
+Error, "phase1/check2/inc-op-float-invalid.rc": 
+  Operand to ++ is not a modifiable L-value.
+Error, "phase1/check2/inc-op-float-invalid.rc": 
+  Operand to ++ is not a modifiable L-value.
+Compile: failure.
