@@ -1,0 +1,32 @@
+function : void legal_assignments() {
+    int a = 1;
+    int b = 2;
+    int c = 3;
+
+    a = b = c;
+    b = c;
+    a = b;
+    c = a;
+
+    int d = 0x1;
+    int e = 0x3;
+    int f = 01;
+
+    f = e = d;
+    f = 1;
+    d = 2;
+
+
+    float x = 1.0;
+    float y = 2.0;
+    float z = 3.0;
+    x = z;
+    z = x = y;
+    y = x;
+
+    bool work = true;
+    bool no_work = false;
+    bool more = false;
+    work = no_work;
+    work = no_work = more;
+ }
