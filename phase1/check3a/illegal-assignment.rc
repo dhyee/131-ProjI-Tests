@@ -1,0 +1,15 @@
+function : void illegal_assignments() {
+     1 = 2;
+     const int temp = 1;
+     temp = 2;
+
+     1 = (2 + 3);
+
+     1 = 2 = 3 = 4;
+     1 = (2 + 3);
+     temp = (2 + 3);
+
+     int temporary = 1 = 2 = 3;
+     int temporary2 = 1;
+     temporary = temporary2 = 2 = 3 = temporary1;
+ }
