@@ -1,0 +1,15 @@
+function : void illegal_type_mismatch() {
+    int int_val = 1;
+    float float_val;
+    int_val = float_val;  // error
+    
+    bool bool_val = true;
+    int_val = float_val;  // error
+    int_val = bool_val;   // error
+    float_val = bool_val; // error
+    int_val = float_val = bool_val; // error
+    
+    
+    float_val = bool_val = int_val; // error
+    
+}
