@@ -1,0 +1,51 @@
+/**
+ * CSE131
+ * Created by Saurabh Sharma and Mustafa Sidiqi on 4/7/15.
+ * Copyright (c) 2015. All rights reserved.
+ */
+function : int main() {
+  bool mustafa = true;
+  bool sidiqi = false;
+  bool mustafa2 = true == true;
+  bool sidiqi2 = false == false;
+  bool mustafa3 = 1 == 1;
+  bool sidiqi3 = 5.5 == 5.5;
+
+  if(mustafa){
+
+  }
+
+  if(sidiqi){
+
+
+  }
+
+  if(mustafa2){
+
+  }
+
+  if(sidiqi2){
+
+
+  }
+
+  if(mustafa3){
+
+  }
+
+  if(sidiqi3){
+
+
+  }
+
+  if(true){
+
+  }
+
+  if(false){
+
+
+  }
+
+  return 0;
+}

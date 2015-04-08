@@ -1,0 +1,33 @@
+/**
+ * CSE131
+ * Created by Saurabh Sharma and Mustafa Sidiqi on 4/7/15.
+ * Copyright (c) 2015. All rights reserved.
+ */
+function : int main() {
+  int mustafa = 5;
+  float sidiqi = 4.0 + 4 + 0 + 1;
+
+  if(1){
+  }
+
+  if(1.0){
+  }
+
+  if(1+4){
+  }
+
+  if(1.0+5){
+  }
+
+  if(hahahahah){
+  }
+
+  if(mustafa){
+  }
+
+  if(sidiqi){
+
+  }
+
+  return 0;
+}

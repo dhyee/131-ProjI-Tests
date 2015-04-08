@@ -1,0 +1,15 @@
+Error, "phase1/check4/while-test-invalid.rc": 
+  bool required for conditional test, int found.
+Error, "phase1/check4/while-test-invalid.rc": 
+  bool required for conditional test, float found.
+Error, "phase1/check4/while-test-invalid.rc": 
+  bool required for conditional test, int found.
+Error, "phase1/check4/while-test-invalid.rc": 
+  bool required for conditional test, float found.
+Error, "phase1/check4/while-test-invalid.rc": 
+  undeclared identifier 'hahahahah'.
+Error, "phase1/check4/while-test-invalid.rc": 
+  bool required for conditional test, int found.
+Error, "phase1/check4/while-test-invalid.rc": 
+  bool required for conditional test, float found.
+Compile: failure.
