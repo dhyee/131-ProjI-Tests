@@ -1,0 +1,30 @@
+/**
+ * CSE131
+ * Created by Saurabh Sharma and Mustafa Sidiqi on 4/7/15.
+ * Copyright (c) 2015. All rights reserved.
+ */
+function : void legal_type_mismatch() {
+   float float_val = 0.0;
+   float another_float_val = 1.0;
+
+   int int_val = 0;
+   int another_int_val = 1;
+   int yet_another_int_val = 2;
+
+
+   float_val = another_float_val;
+
+   float_val = another_float_val = another_int_val;
+   float_val = int_val;
+   float_val = int_val = another_int_val;
+   int_val = another_int_val = yet_another_int_val;
+
+
+
+
+   bool bool_val_true = true;
+   bool bool_val_false = false;
+
+   bool_val_true = bool_val_false;
+
+}
