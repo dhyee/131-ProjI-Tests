@@ -1,0 +1,5 @@
+function : int foo()   { return 5.5; }
+function : float& bar() { return 4; }
+function : float& baz() { int x = 5; return x; }
+function : float& qux() { return 5.5; }
+function : float& iverunoutofnames() { const float x = 5.5; return x; }
