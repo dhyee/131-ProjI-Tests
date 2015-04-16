@@ -1,9 +1,9 @@
-Error, "/tmp/cs131_testrunner_fJf4cw/file.rc": 
+Error, "phase1/check7/file.rc": 
   Exit expression (type bool) is not assignable to int.
-Error, "/tmp/cs131_testrunner_fJf4cw/file.rc": 
+Error, "phase1/check7/file.rc": 
   Exit expression (type bool) is not assignable to int.
-Error, "/tmp/cs131_testrunner_fJf4cw/file.rc": 
+Error, "phase1/check7/file.rc": 
   Exit expression (type float) is not assignable to int.
-Error, "/tmp/cs131_testrunner_fJf4cw/file.rc": 
+Error, "phase1/check7/file.rc": 
   Exit expression (type float) is not assignable to int.
 Compile: failure.

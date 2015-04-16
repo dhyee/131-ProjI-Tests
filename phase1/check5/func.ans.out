@@ -1,27 +1,27 @@
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Value of type int not assignable to variable of type bool.
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Value of type void not assignable to variable of type bool.
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Value of type bool not assignable to variable of type float.
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Value of type void not assignable to variable of type float.
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Incompatible type bool to binary operator +, numeric expected.
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Value of type float not assignable to variable of type int.
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Value of type void not assignable to variable of type int.
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Left-hand operand is not assignable (not a modifiable L-value).
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Argument passed to reference parameter y (type float) is not a modifiable L-value.
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Argument of type float not assignable to value parameter x, of type int.
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Argument of type bool not equivalent to reference parameter y, of type float.
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Argument of type int not assignable to value parameter z, of type bool.
-Error, "/tmp/cs131_testrunner_UIf4cw/file.rc": 
+Error, "phase1/check5/file.rc": 
   Argument of type int not equivalent to reference parameter y, of type float.
 Compile: failure.
