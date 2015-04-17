@@ -1,0 +1,36 @@
+function : bool boolfoo() { return false; }
+function : int intfoo() { return 173; }
+function : float floatfoo() { return 1842.3213; }
+
+function : void bar() { }
+function : void morebar(int x, float &y, bool z) { }
+
+function : int& intreffoo() { int x = 4; return x; }
+
+function : void main() {
+	int x;
+	float y;
+	bool z;
+	
+	z = boolfoo();
+	z = intfoo();
+	z = bar();
+
+	y = intfoo();
+	y = boolfoo();
+	y = floatfoo();
+	y = bar();
+
+	x = x + boolfoo();
+	x = x + floatfoo();
+	x = bar();
+	x = intfoo();
+
+	intfoo() = 4;
+	intreffoo() = 4;
+
+	morebar(5, 3.4, true);
+	morebar(5.5, true, 3);
+	morebar(5, 5, false);
+	morebar(x, y, z);
+}

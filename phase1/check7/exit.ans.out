@@ -1,0 +1,9 @@
+Error, "phase1/check7/exit.rc": 
+  Exit expression (type bool) is not assignable to int.
+Error, "phase1/check7/exit.rc": 
+  Exit expression (type bool) is not assignable to int.
+Error, "phase1/check7/exit.rc": 
+  Exit expression (type float) is not assignable to int.
+Error, "phase1/check7/exit.rc": 
+  Exit expression (type float) is not assignable to int.
+Compile: failure.

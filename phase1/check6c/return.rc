@@ -1,0 +1,2 @@
+function : void foo()  { }
+function : int bar()   { }

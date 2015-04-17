@@ -1,0 +1,7 @@
+function : void main() {
+	exit(true);
+	exit(false);
+	exit(5.5);
+	exit(4 + 4.2);
+	exit(5);
+}
