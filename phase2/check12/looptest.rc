@@ -1,0 +1,35 @@
+function : void foo()
+{
+	int x[5];
+	foreach( int i : x )
+	{
+		break;
+	}
+}
+
+function : void bar()
+{
+	int x[5];
+	foreach( int i : x )
+	{
+		continue;
+	}
+}
+
+function : void fun()
+{
+	bool b;
+    while( b )
+    {
+        break;
+    }
+}
+
+function : void main()
+{
+    bool b;
+    while( b )
+    {
+        continue;
+    }
+}

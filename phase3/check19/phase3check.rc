@@ -1,0 +1,114 @@
+// TODO: test with structs
+function : void test1() {
+    int *x;
+    new x : (); // error.
+}
+
+function : void test2() {
+    int *x;
+    new x;
+    *x = 5;
+    **x; //error
+    int *y;
+    *y = 10;
+    bool ***z;
+    *z;
+    **z;
+    ***z = true;
+    delete z;
+    *nullptr; // error
+    **nullptr; // error
+    nullptr->x; // error
+    nullptr[*x]; // error
+
+    int a;
+    *a; // error
+    **a; // error
+    new a; // error
+    new a : (); // error
+
+    delete a;// error
+
+    int arr[10];
+    int arr2[10][9][8];
+    x[0] = x[10]+x[*y];
+
+    bool b = (*x == ***z);
+    b = (*x != arr[0]);
+    b = (x == **z);
+    b = (x != *z); // error
+    b = (x != arr); // error
+    b = (*z != arr[9]); // error
+    b = (x != nullptr);
+    b = (z != nullptr);
+
+    x++;
+    --z;
+
+
+    delete x;
+    delete arr2; // error
+    delete arr2[9]; // error
+    delete arr2[9][0]; // error
+    delete arr2[0][0][0]; // error
+
+    x = nullptr;
+    z = nullptr;
+
+    delete arr; // error
+    delete arr[0]; // error
+    delete arr[10]; // error
+
+}
+
+function : void test3() {
+    int *x;
+    x[99] = x[-40]+x[*x];
+    x = nullptr;
+    int * r;
+    //x = &r;
+    int* s = r;
+
+    delete s;
+    delete 5;// error
+    delete (*x+*s);
+
+    nullptr = x; // error
+
+    int *arr[4];
+    delete arr; // error
+    delete arr[0];
+    delete arr[1];
+}
+
+function : void check18() {
+    int x;
+    int y;
+    int *z;
+    const int w = 77;
+    z = &x;
+    &x = nullptr; // error TODO
+    y = *&x;
+    *&x = y;
+    *&w = y;
+    &*z = z; // error
+}
+
+// omitting structs
+int x;
+const float y = 55.5;
+bool z[4];
+function : void foo(bool &p1[4], bool* p2) {
+    x = sizeof(p1);
+    x = sizeof(p2);
+}
+function : void check19() {
+   foo(z, &z[0]);
+   x = sizeof(float);
+   x = sizeof(float***);
+   x = sizeof(int[3]);
+   x = sizeof(x);
+   x = sizeof(y);
+   x = sizeof(z);
+   //x = sizeof(t);
+}

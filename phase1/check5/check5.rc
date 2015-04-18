@@ -1,0 +1,85 @@
+function : void doNothing() {
+
+}
+function : int return1() {
+    return 1;
+}
+function : bool returnFalse() {
+    return false;
+}
+function : int returnInt(int i) {
+    return i;
+}
+function : bool returnBool(bool b) {
+    return b;
+}
+function : float returnFloat(float f) {
+    return f;
+}
+
+function : void doSomething() {
+    doNothing();
+    return1();
+    returnFalse();
+    returnInt(2);
+    returnBool(true);
+
+    return1(false); // error, num args diff from num expected
+    returnInt(); // error, num args diff from num expected
+    returnBool(false,false); //error, // num args diff from num expected
+
+    returnBool(1); // error, not assignable
+    returnInt(false); // error, not assignable
+
+    float f = 1;
+    // int to float okay
+    returnInt(f); // error
+    returnInt(returnFloat(f)); // error
+    returnFloat(returnInt(f)); // error
+    returnFloat(returnInt(1));
+}
+
+function : void doNothing2(int & i) {
+}
+function : void doNothing3(int & i, bool & b) {
+}
+function : void doNothing4(float & f, bool & b) {
+}
+
+function : int doSomething2() {
+    int i = 1;
+    float f = 2;
+    doNothing2(i);
+    doNothing2(f); // error, pass by ref, not equivalent
+    doNothing2(true); // error, pass by ref, not equiv
+
+    doNothing3(i, f); // error, pass by ref, not equiv
+    doNothing3(i, true); // true non modifiable L val
+
+    doNothing4(i+f, true); // error, non modifiable L val
+
+
+    doNothing4(i+f, true, false); // error
+    doNothing4(i+f, i, true); // error
+    doNothing4(i+f, true); // 2 errors
+    doNothing4(i+f, i); // 2 errors
+
+    return 0;
+}
+
+function : int & retByRef() {
+    int var = 1;
+    return var;
+}
+function : void checkRet() {
+    retByRef() = 5;
+    return1() = 1;
+}
+
+function : bool foo() { return false; }
+function : void bar () { }
+function : void main() {
+    int x=0;
+    x = x+foo();
+    x = bar();
+}

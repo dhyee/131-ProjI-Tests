@@ -1,0 +1,53 @@
+// below: test overloaded functions
+function : void overloadedFunc() { }
+function : int overloadedFunc() { return 0; } // error
+function : int overloadedFunc(int a, int b, float c, int & arr[5]) { return a; }
+function : int overloadedFunc(int a, int b, float c, int & arr[5]) { return b; } // error
+function : int overloadedFunc(int a, int b, float c, int & arr[6]) { return b; } // okay, bc array length?
+function : int overloadedFunc(int &a, int &b, float c, int & arr[6]) { return b; } // error
+function : int overloadedFunc(int &b, int &a, float c, int &arr[6]) { return b; } // error
+function : int overloadedFunc(float c, int & arr[6], int &b, int &a) { return b; } // okay
+
+function : bool overloadedFunc(int a, int b, float c) { return a == b; }
+function : bool overloadedFunc(int a, int b, int &arr[5]) { return b == arr[0]; }
+
+function: int nonOverloadedFunc(int a, int b, float c, int &arr[5]) { return 0; }
+
+// PROBLEM with current code:
+// declaration checks by param name, not by param type.
+// using first letter not enough...for instance array
+// then handle with function calls
+function : void checkOverloadedFunctions() {
+    //int overloadedFunc; // okay
+    overloadedFunc(); // error. commented out above to test the below.
+    int arr5[5];
+    arr5[0] = 1; // just type checking actually.
+    arr5[1] = 2;
+    arr5[2] = 3;
+    arr5[3] = 4;
+    arr5[4] = 5;
+    int arr6[6];
+    int a = 1;
+    int b = 2;
+    float f = 10; // floats can't be hex or cot?
+    overloadedFunc(1, 2, 3, arr5); // error (doesn't detect 3 as a float)
+    overloadedFunc(1, 2, f, arr5);
+    overloadedFunc(a,b,f,arr5);
+    overloadedFunc(a,b,f,arr6);
+    int arr7[7];
+    overloadedFunc(a,b,f,arr7); // error
+    overloadedFunc(f,arr6,b,a);
+    overloadedFunc(f,arr6,a,b);
+    overloadedFunc(f,arr7,a,b); // error
+    overloadedFunc(f, arr6, f, f); // error
+    overloadedFunc(f,f,f); // error
+    overloadedFunc(b,b,b); // error
+    overloadedFunc(a,b,arr6); // error
+    overloadedFunc(b,b,arr5);
+
+    nonOverloadedFunc(a,b,f,arr5);
+    nonOverloadedFunc(a,b,f,arr6); // error
+    nonOverloadedFunc(a,b,f,arr5); // no error bc not overloaded. can do promotion int->float
+    nonOverloadedFunc(f,f,f,arr5); // 2 errors
+    nonOverloadedFunc(f,0x30, f,arr7); // 2 errors
+}

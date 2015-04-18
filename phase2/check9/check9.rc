@@ -1,0 +1,104 @@
+int var;
+
+function : int foo(float padres)
+{
+    if( padres > 0 )
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
+function : void bar()
+{
+}
+
+function : float bar(bool chargers)
+{
+    float f = 0.0;
+
+    if( chargers )
+    {
+        f = f + 1;
+    }
+    else
+    {
+        f = f - 1;
+    }
+
+    return f;
+}
+
+function : bool bar(bool & mirror)    // Error, redeclared function
+{
+    return true;
+}
+
+// This situation will not be tested (WNBT)
+/*function : bool bar(bool & mirror)    // Error, redeclared function
+{
+    return 1;
+}*/
+
+function : int bar(float goron, int zora)
+{
+    return 0;
+}
+
+function : void var()    // Error, redelcared id
+{
+}
+
+function : void derp(float clown)
+{
+}
+
+function : int derp(float kairi)    // Error, redeclared id
+{
+	return 0;
+}
+
+function : bool & derp(bool & flop)    // Error, redeclared id
+{
+    return flop;
+}
+
+function : void poop(bool qwerty)
+{
+}
+
+function : bool poop(float & jimmy)
+{
+    if( jimmy > 0 )
+    {
+    	return true;
+    }
+    
+    return false;
+}
+
+function : int main()
+{
+    int i;
+    float f;
+    bool b;
+
+    i = foo( i );    // No error, foo is not overloaded and int assignable to float
+    i = foo( b );    // Error, bool not assignable to float
+    // The function below will not be tested, as the identifier was an error
+    //f = bar( b );    // No error, bar is overloaded and bool equiv to bool
+    i = bar( f, i ); // No error
+    i = bar( i, i ); // Error, int not equivalent to float
+    b = bar();       // Error, void not assignable to bool
+    // Neither derp would be called, as derp was an error previously
+    //derp( i );       // No error
+    //i = derp( f );   // Error, void not assignable to int
+    poop( b );       // No error
+    f = poop( b );   // Error, void not assignable to float
+    b = poop( f );   // No error
+    f = poop( i );   // Error, poop is overloaded and int not equiv to float
+    b = poop( 1.0 ); // Error, 1.0 is not a modifiable L-value
+    
+    return 0;
+}

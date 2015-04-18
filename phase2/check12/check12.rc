@@ -1,0 +1,70 @@
+int x;
+
+function : int foo(int i)
+{
+    while( true )
+    {
+        break;    // No error
+    }
+
+    continue;    // Error, continue outside of loop
+    break;       // Error, break outside of loop
+
+    return i;
+}
+
+function : void check12a()
+{
+    int a;
+    int b[2];
+    int c[3];
+    //int * d[4];    // Uncomment after pointers
+    int e [3][4];
+
+    foreach( float x : a )    // Error, 'a' is not an array type
+    {
+        break;    // No error
+    }
+
+    foreach( bool x : b )    // Error, int not assignable to bool
+    {
+    }
+
+    foreach( float x : b )    // OK, int assignable to float
+    {
+        continue;    // No error
+    }
+
+    foreach( float & x : b )    // Error, int not equivalent to float
+    {
+    }
+
+    /*foreach( float * & x : d )    // OK, float* equivalent to float*
+    {    // Uncomment after pointers
+    }
+
+    foreach( float x : d )    // Error, float* not assignable to float
+    {    // Uncomment after pointers
+    }*/
+
+    foreach( float x : e )    // Error, flaot[4] not assignable to float
+    {
+    }
+}
+
+function : void main()
+{
+    x = 0;
+
+    while( x < 10 )
+    {
+        x = x + 1;
+
+        if( x != foo(x) )
+        {
+            continue;    // No error
+        }
+    }
+
+    //check12a();
+}

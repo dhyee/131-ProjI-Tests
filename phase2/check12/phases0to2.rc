@@ -1,0 +1,467 @@
+// Note: lines that do not compile are marked "error"
+// tests phases 0 to 2, with exception of structs.
+
+// Tests: print types (via diff)
+// Tests: Mod L-val, Non-mod L-val, R-val <-
+// Test: example.rc later.
+
+// TODO: PointerType (general, also check2,3)
+// nullptr is equivalent to any pointer type.
+
+int arr1[6];
+int arr2[6];
+int myArrayOfArray[4][6];
+int glb1;
+int glb2 = 5;
+
+function : void foo(int x) { }
+
+function : int main() {
+    arr2 = arr1; // error. LHS is an array identifier.
+    myArrayOfArray[3][5] = 4;
+    foo(true); // error. type mismatch
+    return 0;
+}
+
+/*function : void toBeTestedLater() {
+    int * iptr1;
+    int * iptr2;
+    int ** ptr3;
+    float * fptr1;
+    float * fptr2;
+    float *** fptr3;
+    iptr1 = iptr2;
+    iptr1 = iptr3 // error. base types not equivalent
+    fptr1 = iptr1; // error
+    **fptr3 = fptr1;
+}*/
+
+function : int phase0() {
+     int *x;
+     new x;
+     delete x;
+
+     int temp = glb1+glb2;
+     temp = ::glb1+::glb2;
+     temp = -::glb1;
+     temp = +::glb2;
+     glb2 = ::glb1 + - glb2;
+
+     bool glb2;
+     if(glb2) { }
+     //bool t = -glb2; // WNBT: -bool or -false
+     glb2 = ::glb2; // error
+
+
+     int h = 0x42;
+     h = 0X42;
+     const int h_c = 0xABCDEF;
+     h_c = 0XABCDEF; // error
+     h = 0XABCDEF;
+     h = 01234567;
+     const int o = 047102;
+     const int oneg = -o;
+     const int opos = +o;
+     return temp;
+}
+
+function : int check0() {
+    int sum = ::arr3[5]; // error
+    return glb1 + ::glb1 + ::glb3; // error in glb3
+}
+
+// also check 4
+function : int check1() {
+    int e1 = 5;
+    int e2 = 7;
+    int arr1[5][6];
+    int arr3[7][8][9];
+    bool arr2[7][8][10][11][1];
+    float f1 = 10;
+    float f2 = 0X10;
+    int e3 = 0707;
+
+    // the following are valid: arithmetic and mod
+    if(e1+e2 == 12) {
+        if(arr1[0][1]/arr1[1][4]*arr3[4][7][8] == 1) {
+            if(e3-f1 == 0) {
+                if(arr3[2][0][1] % 5 == 1) {
+                }
+            }
+        }
+    }
+    if(arr3[0][0][0] < arr1[4][3]) {
+        if(arr1[4][3] >= arr3[0][0][0])
+        {
+            if(f1 <= arr3[0][0][0]) {
+
+            }
+        }
+    }
+    if(arr3[0][0][0] == arr1[4][3]) {
+        if(f1 == arr3[0][0][0]) {
+            bool b = f1 == arr3[0][0][0];
+        }
+    }
+    bool b_1 = arr2[0][0][9][10][0] != arr2[6][7][2][1][0];
+    b_1 = (arr2[0][0][9][10][0] || arr2[6][7][2][1][0]) &&
+        (arr2[0][0][9][10][0] && arr2[6][7][2][1][0]);
+    b_1 = !b_1;
+
+    int temp = f1 / e1; // error
+    float t = f1 / e1;
+    t = f2 % e3; // error bc f2 is a float
+    t = e3 % e3; // okay
+    temp = e2 % e3;
+    float b = f1 == arr3[0][0][0]; // error
+    int b_2 = arr2[0][0][9][10][0] != arr2[6][7][2][1][0]; // error
+    b_1 = (arr2[0][0][9][10] || arr2[6][7][2]) &&
+            (arr2[0][0][9][10][0] && arr2[6][7][2][1][0]); // error
+    b_1 = arr1[0][1] / !arr1[1][4] || arr3[4][7][8]; // error
+    int temp2 = e1 | f1; // error
+
+    (f2 % e3) = 1; // error
+    (f1 / e1) = 010; // error
+    ((arr2[0][0][9][10][0] || arr2[6][7][2][1][0]) &&
+            (arr2[0][0][9][10][0] && arr2[6][7][2][1][0])) = true; // error
+
+    return arr1[0][1] & arr1[1][4] ^ arr3[4][7][8] | e1;
+}
+
+function : bool check2() {
+    int a = --arr1[0]+arr2[5]++; // okay
+    float g = (glb1++ + glb2++)++; // error. bc not modifiable
+    g = glb1++ + glb2++; // f undeclared bc prev error. WNBT.
+    float f;
+    f = f--;
+    f = --f + f++ - --f / f;
+    int b = 0;
+    b = 2+b+glb2-7; // 0 but no error bc not const
+    f = f/b;
+    const int c = 0;
+    f = f/c; // error. arithmetic.
+    f = 0/f; // okay
+
+    myArrayOfArray[3]++; // error
+    --myArrayOfArray[0]; // error
+    ++arr1; // error. not modifiable
+    f++ = 5; // error
+
+    --c; // error
+    int ret = --5 + 4++; // error
+
+    return false;
+}
+
+// also tested in above functions
+function : void check3() {
+    bool b1 = true;
+    false = true; // error
+    int a = 1;
+    int b = 2;
+    b = a = b1; // error with int and bool
+    float f = 0x501A;
+    1 = 2 = false = 1 = f; // error with int and float
+    const int c1 = 5;
+    const int d2 = 4;
+    c1 = d2 = 5; // error
+    5 = c1 = d2; // error
+    float arr[10];
+    5 = 4 = arr[0]; // error
+}
+
+function : int returnByValue(int var) {
+    if(arr1[5] > 0) {
+        return var;
+    }
+    else {
+        float f = 0x10;
+        if(f == 0) {
+            return false; // error
+        }
+        else { // no else if's
+            if(f > 0) {
+                return f; // error
+            }
+        }
+        return 1;
+    }
+    // no return found: top-level. okay.
+}
+function : int & returnByRef() {
+    int a = 10;
+    if(a != 10) {
+        if(a > 100) {
+            return false; // error
+        }
+        return a;
+    }
+    return 5; // error not modifiable l-value
+}
+
+function : int check6() {
+    if(myArrayOfArray[3][5]) { // error: bool required for cond test, int found
+        return ; // error
+    }
+    else {
+        if((arr1[5] > 3) && true) { // && has higher precedence
+            return false;
+        }
+
+        exit(0);
+    }
+    // missing return statement.
+}
+
+function : void check7() {
+    int a = 0;
+    if(a > 0) {
+        exit(true+false); // error
+    }
+    if (a == 0) {
+        float f = 01077;
+        exit(f+a); // error
+    }
+    exit(myArrayOfArray[3][5]);
+}
+
+function : void checkWhile(int a) {
+    while (a > 0) {
+        a--;
+    }
+    while(true) {
+
+    }
+    while(a) { // error
+
+    }
+    while(a != 0 || a+a+a > 0) {
+
+    }
+}
+
+// check 5: for nonoverloaded
+function : void foo1() { }
+function : int foo2(int a, int b) { return 1; }
+function : int & foo3() {
+    int x;
+    return x;
+}
+function : int foo4(bool &a, int &b, float c, float &d) { return 1; }
+function : int foo5(int &arr[6], int &arr[7]) { return 1; }
+
+function : void check5() {
+    // valid
+    foo1();
+    foo2(5,6);
+    int x = foo3();
+    bool b = false;
+    float f1 = 10;
+    x = foo4(b, x, 1, f1); // okay int->float
+    bool b1 = true;
+    bool b2 = false;
+    float f2 = 809;
+    foo4(b1,x,f1,f1);
+    int arr6[6];
+    int arr7[7];
+    foo5(arr6, arr7);
+    foo3() = 1;
+    foo3() = arr6[2];
+
+    // TODO: array names not modifiable
+    // the following are errors
+    x = foo4(true, 5, 1, 10); // multiple
+    foo1(1);
+    foo1(true, 1);
+    foo2();
+    foo2(true, false);
+    foo5(arr7,arr6);
+    foo5(arr6,arr6);
+    foo5(1,arr6,3);
+    foo5(2,arr7);
+    b = foo3();
+    foo3() = false;
+    foo4(b1, f1,f2,f2);
+    foo1() = 5;
+    foo2(1,3) = 1;
+}
+
+// testing overloaded functions in: checkOverloaded.rc
+
+function : void myArrayOfArray() { } // error
+function : int glb2() { return 10 && 0x70 || 010; } // error
+
+function : int check8() {
+    int x = 0;
+    const int c = x; // error
+    const int d = 1;
+    const int e = d;
+    const float f = e;
+    const float g = 100;
+    const int h = 0xABCDE;
+    const int o = 070123;
+    int y = 070123;
+    const int i = y; // error
+    const int c1 = 10;
+
+    float f1 = f/g;
+    // f1 = c/d; // reuse WNBT
+    int i1 = f1/g; // error
+    bool b1 = h/o; //error
+    const int j = false; // error
+    const int k = c1 || d && x ^ y; // error
+    const int ZeroI = 0;
+    const int ZeroHex = 0x0;
+    const int ZeroOct = 00;
+    const float ZeroF = 0;
+    f1 = c1/0; // arith error
+    f1 = d/c1/Zero; // arith error
+    b1 = false%ZeroHex; // error
+    int res = 100/ZeroOct; // error, don't reuse
+    int zero = 0;
+    int res2 = ZeroI/zero;
+    int res3 = zero%ZeroI; // ref compiler doesn't complain...
+    int res4 = zero/ZeroF; // error
+    int res5 = 100%ZeroI; // error
+    f1 = zero%ZeroF; // error
+    f1 = 100/zero;
+    f1 = h/0.0; // error
+
+    return Zero;
+}
+
+function : void check10and11() {
+    int a[5];
+    a[0] = 1;
+    a[1] = 2;
+    a[2] = 3;
+    a[3] = 4;
+    a[4] = 5;
+    int b[1][2][3];
+    b[0][1][2] = 0;
+    b[0][1][2] = 1;
+    b[0][0][2] = 0;
+    int c[4][1][7];
+    bool d[10][11][14][1][7];
+    d[0][0][0][0][0] = false;
+    d[0][0][0][0] = false; // error
+    d[0][0][0][0][1] = false;
+    d[0][0][0][1] = false; // error
+    bool e[7][1][14][11][10];
+    float f[1][2][1][2];
+    float g[20];
+
+    const int c1 = 10;
+    const int c2 = 20;
+    int c3 = 40;
+    int arr3[false]; // error
+    int arr4[f[0][1]]; // error
+    int arr5[f[0][1][0]]; // error
+    bool arr6[f[0][1][0][1]]; // error
+    bool arr7[d[10][11][14][1][7]]; // error
+    bool arr8[d[0][1][4][0][76]]; // error
+    int arr9[c1][c2][c1][c2];
+    float arr10[c1][c2][c1][c2][c3]; // error
+    float arr11[c1][c2][c1][c2];
+    float arr12[c1][c2][c1][c3]; // error
+    int x = 0;
+    bool arr13[x]; // error
+    bool arr14[0][0][-1][-1][-10]; // error
+    bool arr15[-5]; // error
+    bool arr16[1];
+
+    c1[0] = 10; // error
+    c3[1] = 5; // error
+    c1[0][1][2]; // error
+    c3[10][15][0][0][1][12]; // error
+    a[4]++;
+    a[5]; // error
+    a[10]; // error
+    --d[10][11][14][1][7]; // error
+    d[2+9]; // error
+    d[2+7][2+8][0+1][0+0+0];
+    d[false]; // error
+    d[a]; // error
+    d[b[0]]; // error
+    d[b[0][1]]; // error
+    d[b[0][0][0]];
+
+     if(d[0][1][3][0][6] && e[6][0][13][10][9]) {
+        if(!d[0][1][3][0]) { // error
+        }
+        if(e[6] > 0 || e[6]) { // error
+        }
+        if(e[6][0][14][10][9] == d[0][1][3][0][6]) { // error
+
+        }
+        if(e[6][0][13][10][9] == d[0][1][3][0][6]) {
+
+        }
+        float arr15[c1][c2][c1][c2];
+        float arr16[c1][c2][c1][c2];
+        if(arr16[c1-1][c2-1] == arr15[c1-1][c2-1]) { // error: incompatible types
+
+        }
+        if(arr16[c1-1][c2-1][0] == arr15[c1-1][c2-1][0]) { // error
+
+        }
+        float arr17[c1][c1][c2][c1][c2];
+        if(arr17[0][c1-1][c2-1] == arr15[c1-1][c2-1]) { // error
+
+        }
+        if(arr17[c1-1][c2-1][0] == arr15[c1-1][c2-1][0]) { // error
+
+        }
+     }
+}
+
+function : bool check12() {
+    /*foreach (int a[6] : myArrayOfArray) {
+    }*/
+
+    foreach (int i : myArrayOfArray[0]) {
+
+    }
+    int inc = 0;
+    foreach (int i : myArrayOfArray[inc]) {
+
+    }
+
+    foreach (int i : myArrayOfArray) {
+        // error
+        foreach (bool b : myArrayOfArray[1]) {
+            // error
+        }
+        foreach (int c : myArrayOfArray[1][0]) {
+            // error
+        }
+    }
+
+    foreach (float i : myArrayOfArray[0]) {
+        foreach (float & a : myArrayOfArray[0]) {
+            // error
+            // TODO: pointers
+        }
+    }
+
+    break; // error
+    if(arr1[0] == 0) {
+        continue; // error
+        if(arr1[0] > 0) {
+            break; // error
+        }
+    }
+    continue; // error
+
+    return false;
+}
+
+function : void errorArrays(bool & arr[10][-1][-2]) {
+    const int c1 = 10;
+    const int c2 = 20;
+    int arr9[c1][c2][c1][c2];
+    bool arr14[0][0][-1][-1][-10]; // error: TODO
+    arr9[-1][-5][-6]; // new: error
+    arr9[-1][-5][-6][-10]; // new: error
+    arr9[0][0][0][0][0]; // new: error
+}

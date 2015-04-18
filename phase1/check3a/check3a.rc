@@ -1,0 +1,32 @@
+int globalX;
+
+function : int foo()
+{
+	int x = ::globalX + 5;
+	return x;
+}
+
+function : int & bar(int param)
+{
+	::globalX = ::globalX + param;
+	return param;
+}
+
+function : int main()
+{
+	int localX;
+	
+	::globalX = 1;
+	
+	localX = foo();
+	
+	foo() = localX;		// Error, not a modifiable L-value
+	
+	localX = bar(::globalX);
+	
+	bar(localX) = 0;
+	
+	(::globalX + localX) = 5;    // Error, not a modifiable L-value
+	
+	return 0;
+}

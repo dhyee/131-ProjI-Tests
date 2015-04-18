@@ -1,0 +1,86 @@
+function : float foo()
+{
+    return 5;    // Should be fine, int is assignable to float
+}
+
+function : int bar()
+{
+    return 2.3;    // Error, float not assignable to int
+}
+
+function : void derp()
+{
+    return true;    // Error, bool not assignable to void
+}
+
+function : void oHaiThere()
+{
+    // No need for a return
+}
+
+function : bool needsReturn()
+{
+    // Error, missing return statement
+}
+
+function : bool needsTopLevel(bool param)
+{
+    bool b;
+    b = param;
+
+    if( b )
+    {
+        return true;
+    }
+
+    // Error, missing return statement (none found in top level)
+}
+
+function : int & retIntByRef()
+{
+    int i;
+    float f;
+    bool b;
+
+    i = 2;
+    f = 0.5;
+    b = true;
+
+    if( b )
+    {
+        return f;    // Error, float not equivalent to int
+    }
+    else
+    {
+        return b;    // Error, bool not equivalent to int
+    }
+
+    return i;    // Should be fine
+}
+
+function : float & retFloatByRef()
+{
+    float f;
+    int i;
+    bool b;
+
+    f = 2.5;
+    i = 5;
+    b = false;
+
+    if( f > i )
+    {
+        return f;    // Should be fine
+    }
+    else
+    {
+        return i;    // Error, int not equivalent to float
+    }
+
+    return b;    // Error, bool not equivalent to float
+}
+
+function : bool & nonModLVal()
+{
+    return true;
+}

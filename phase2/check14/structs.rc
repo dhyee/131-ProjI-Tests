@@ -1,0 +1,270 @@
+// tests duplicate identifers: fields, params, functions. no ctor/dtor
+structdef MYS1 {
+    int x;
+    int y;
+    bool x; // error
+    float x; // error
+    bool z;
+    // TODO: pointers
+    function : void foo () { }
+    function : void foo (int x, int y) { }
+    function : int foo (int y, int x) { return 0; } // error: dup
+    function : bool foo( int z, int & z) { return false; } // error: dup. also second param z.
+    function : bool foo () {  } // error: dup. no return.
+    function : int nonoverloadedFoo(bool x, bool &x) { return 0; } // error: the second param is a redeclared id
+    function : int x () { } // error: dup.  no return
+    function : void x (int x, int y) { } // error. x redclared
+    function : void x (int y) { } // error
+    function : bool z () { return this.z; } // error
+}; // SEMI COLON AFTER STRUCT
+
+// member vars have to exist in a struct.
+// struct vars and functions have to be called using this.
+structdef MYS2 {
+    int x;
+    float y;
+    bool z;
+
+    // ctors/dtors
+    MYS2() { return; }
+    ~MYS2() { }
+    MYS2(int x) { this.x = x; }
+    MYS2(int & x, int & y) {
+        this.x = x;
+        this.y = y;
+        this.x = this.y; // error
+    }
+    MYS2(float y) { this.y = y; }
+    MYS2(int x, float &y) { this.x = x; this.y = y; }
+    ~MYS2() { y; } // error
+    MYS2(int y) { } // error
+    MYS2(int &arr[6], int &arr2[7], int &arr3[8], int x) { }
+    MYS2(int &arr[7], int &arr2[8], int &arr3[8], int x) { }
+    MYS2(int &arr[6], int &arr[6]) {} // error
+
+    function : void foo() { }
+    function : void foo(int foo) { foo(); } // error. needs this
+    function : void test() { foo(x,this.x); } // error
+    function : void test(int i) {
+        this.foo(this.x);
+        this.foo();
+    }
+    function : void test(int s, int s) {
+        this.a; // error
+        float f = 10;
+        this.foo(f); // error
+    } // error
+    // one-pass compiler: reference only functions that were already declared.
+};
+
+function : void foo(int foo) { } // no error.
+
+structdef MYS3 {
+    //MYS3 * next; // valid. TODO: uncomment once ptrs exist
+    //MYS3 * next2;
+    //MYS3 ** m;
+    //MYS3 * m; // error. redeclared.
+    int x;
+    ~MYS3() {}
+    ~MYS2() {} // error. MYS2 does not match
+};
+
+structdef MYS4 {
+    int x;
+    int arr[7];
+    bool arr1[10][10][10]; // error
+    bool arr2[8][10];
+    MYS3() { } // error. does not match
+    MYS4() { accessArray(); } // error. undeclared id
+    MYS4() { this.y; } // error
+
+    function : void accessArray() {
+       int i = arr[6]+arr[5]; // undeclared arr
+       int j = this.arr[5] - this.arr[1] / this.arr[0];
+       this.arr[7] + this.arr[8]; // error. out of bounds
+       bool b = arr1[7]; // error.
+       bool b2 = arr2[7][1] || arr2[7][2];
+       float fArr[10][2][1];
+       float f1 = thisfArr[9]; // error undeclared
+       float f2 = this.FArr[0][0][0]; // error undeclared
+       float f3 = fArr[9][0][0] % fArr[9][1][0]; // error. not equiv to int.
+       float f4 = fArr[9][0][0] / fArr[9][1][0];
+       fArr[9][1][1]; // error. dimensions
+    }
+};
+
+structdef MYS5{
+    int x;
+    //MYS1 * m1;  // TODO: ptrs
+    //MYS2 ** m2;
+    //MYS3 *** m3;
+    //MYS4 **** m4;
+    MYS5( float x) { }
+    function : void call() {
+        foo(2);
+        int foo = 1;
+        int i = foo(foo); // error: void
+        foo(foo); // error foo not a function.
+    }
+    function : void call(float f) { } // no promotion
+};
+
+structdef MYS6 {
+   int x;
+   MYS6(float x) {}
+   MYS6(bool x) {}
+};
+
+// global instantiations
+   MYS1 m1a;
+   MYS1 m1b : ();
+   MYS1 m1c : (1); // error
+   MYS1 m1d[10]; // array of MYS1
+   MYS1 m1e[10] : (); // array of MYS1
+
+   MYS2 m1a; // error redeclared id
+   MYS2 m2a;
+   MYS2 m2c : (1);
+   int arr6[6];
+   int arr7[7];
+   bool arr8b[8];
+   int arr8[8];
+   float arr7f[7];
+   int x;
+
+
+function : void main() {
+   // local instantiations
+   MYS1 m1a;
+   MYS1 m1b : ();
+   MYS1 m1c : (1); // error
+   MYS1 m1d[10]; // array of MYS1
+   MYS1 m1e[10] : (); // array of MYS1
+
+   MYS2 m1a; // error redeclared id
+   MYS2 m2a;
+   MYS2 m2c : (1); // error
+   MYS2 m2d : (arr8[7]);
+   MYS2 m2e : (arr8b[7]); // error
+   MYS2 m2e : (arr8b[7]); // error
+   MYS2 m2f : (arr6[5], arr7f[0]);
+   MYS2 m2g : (arr6, arr7, arr8, arr6[0]);
+   MYS2 m2h : (::arr6, ::arr7, ::arr8, arr6[0]);
+   MYS2 m2i : (arr6, ::arr7, arr8, ::arr6[0]);
+   MYS2 m2j : (arr7, arr7, arr8, ::x); // error
+   MYS2 m2k : (arr7, arr8, arr8, x);
+
+   MYS3 m3;
+   MYS3 m3a[1][10][2][3][4];
+
+   MYS4 m4; // ctors are both error. but still must create a default. so no error.
+   MYS4 m4 : (); // redeclared
+   MYS4 m4b : ();
+
+   MYS5 m5 : (); // error
+   MYS5 m5k : (arr7, arr8, arr8, x); // error
+   MYS5 m5b : (arr7f[6]);
+   MYS5 m5c : (arr7f[7]); // error
+   MYS5 m5d : (x); // okay, promoted?
+
+   MYS6 m6a : (x); // bc overloaded. is not promoted. error
+   MYS6 m6b : (arr7f[0]);
+   MYS6 m6c : (arr8b[1]);
+   MYS6 m6d : (true);
+
+   MYS6 m6arr[10] : (arr7f[0]);
+   MYS6 m6arr2[10] : (); // error
+   MYS6 m6arr3[10] : (arr7f[0],::x); // error
+   MYS6 m6ar4[1][2][3][10] : (arr7f[0]);
+
+
+   // check 14b
+   arr6.x; // error
+   arr6[0].x; // error
+   int temp1 = arr8b[0].x; // error
+   bool temp2 = arr8b[1].x; // error
+   x.x; // error
+
+   int x1 = m1a.x;
+   x1 = m1a.y+m1a.x;
+   x1 = m1a.y+m1b.x / m1a.z; // dividing by bool. error
+   x1 = m1b.y*m1d[0].something-m1e[0].x; //something does not exist. error.
+   x1 = m1a.x ^ m2a.x | m2d.x & m2h.x;
+   x1 = m2f.y & m1a.x ^ m2a.x | m2d.x & m2h.x; // error. float.
+   x1 = m1a.x + m2f.y / m2g.y - m2f.x;
+   x1 = m1a.z || m2k.z; // in bool error
+   bool b = m1a.z || m2k.z;
+
+   MYS3 * next = m3a.next;
+   MYS3 * next2 = m3b[1][10][2][3][4].next; // error dimensions
+   MYS3 * next3 = m3b[0][0][1][2][2].next;
+
+   int temp3 = m4.x;
+   temp3 = m4.arr+arr[0]; // error
+   temp3 = m4.arr+m4.arr[0]; // error
+   temp3 = temp3 + m4.arr[5];
+   bool temp = true;
+   temp = m4.arr1 || m4.arr2; //error
+   temp = m4.arr1[0] || m4.arr2; // error
+   temp = !(m4.arr[0][1][5] && m4.arr2[0][9]) || false;
+
+
+   //m1b m2f m3a[1][10][2][3][4] m4b m5b m6arr[10]
+   m6arr[0].foo(); // error
+   m1b.foo(2,2);
+   m1b.foo(temp3, temp3);
+   m1b.foo(temp3, temp3); // this.only checked within structs.
+   m2f.foo();
+   m2f.foo(temp3);
+   m1b.foo(temp3); // error
+   m2f.test(true); // error
+   m2f.test(10);
+   m2f.test(m6arr[0]); // error
+   m2f.test(m5b); //error
+   m2f.test(m6arr); // error
+   m3a[0][0][1][2][3].foo(); // error
+   m3a[0][0][1][2][3].test(); // error
+   m3a[0][0][1][2][3].test(10); // error
+   m6arr[0].foo(); // error
+   int i = m6arr[1].foo2(); // error
+   int i5 = m4b.accessArray(); // error
+   m4b.accessArray();
+   m6arr[1].accessArray(); // error
+   m1b.accessArray(); // error
+   m5b.call();
+   m1b.call(); // error
+   m5b.call(10); // error
+   float f10 = 10;
+   m5b.call(f10); // error
+}
+
+// checking scope
+// global
+int x;
+float y;
+bool z;
+int arr[6];
+structdef ANOTHERSTRUCT {
+    int x;
+    int a;
+    bool arr7[10];
+    function : void test() {
+        int res = x+arr[5]; // global
+        res = ::x+::arr[5];
+        int x = 0;
+        res = x*x; // local and local
+        res = x/::x; // local and global
+        res = ::x^::x; // global and global
+
+        res = a; // error
+        res = this.a+this.x/x%::x&this.x; // no error
+        bool b = true;
+        b = arr7; // error
+        b = arr7[0]; // error
+
+        b = this.arr7;
+
+        this.test();
+        this.res; // error
+    }
+};

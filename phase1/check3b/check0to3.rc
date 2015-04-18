@@ -1,0 +1,132 @@
+int myX;
+int myY;
+
+// phase 0
+function : int main() {
+  int *x;
+  int a;
+  int b;
+  float c;
+
+  a = -1;
+  b = 5;
+
+  new x;	// phase 0 will make this syntactically correct
+
+  *x = 1;
+
+  a = 0xA;
+  b = 0XB;
+  c = 015;
+
+  delete x;	// phase 0 will make this syntactically correct
+
+  /*if(a == 1) {
+    exit(true); // check 7
+  }*/
+  //exit(1);
+  return 0;
+}
+
+// phase 1: check 0
+
+function : int foo() {
+    int x;
+    int i = 5 + ::x; // error
+    int j = 5 + ::myX;
+    return 0;
+}
+
+// phase 1: check 1
+function : int checkBinaryOps() {
+    int x = 5;
+    int y = 7;
+    float z = 1;
+
+    int result = x+y;
+    result = result+z; // error
+    float resultF = result+z; // okay
+    resultF = resultF+resultF;
+
+    x = y-x;
+    z = z*resultF;
+    z = z/y; // okay
+    y = resultF/x; // error
+
+    ::myX = ::myX % 1;
+    ::myY = z % ::myX; //error
+
+    bool bres = false;
+    if(x < y) {
+        bres = 0; // error
+     }
+    if(x > y) {
+        x = 0;
+    }
+    if(x >= z) {
+        x = false; // error
+    }
+    bres = (z <= z);
+    bres = (z == resultF);
+    bool bres2 = (z != resultF);
+    bres2 = (true == true);
+    bres2 = (true != false);
+    bres2 = (x == true); // error
+    bres2 = (false == resultF); // error
+
+    int option1 = 10;
+    int option2 = 20;
+    float optionF = 30;
+    bool b = (true || false);
+    b = (true && true);
+    b = !b;
+    b = (option1 && optionF); // error
+    b = (optionF || option1); // error
+    b = !option1; // error
+    b = (b && option1); // error
+
+    b = option1 & option2; // error
+    int ret = (option1 & option2) | option2 ^ option1;
+    float retF = (option1 & option2) | option2 ^ option1;
+    return true; // error
+    //return 1;
+}
+
+// check 2
+function : int check2() {
+    int x = 0;
+    //int y = x++; // TODO: pre/post inc/dec
+    //float w = x++ + --y;
+    bool b = true;
+    //y = ++b; //error
+    //int res = (x+y)++; //error
+
+    // check 3
+    (x+y) = 10;
+    1=3=4=2;
+
+    // check 4: debug line number off
+    if(x) { // error
+        x = 0;
+    }
+    if(x == 0) {
+        while(x >= 0)
+        {
+            //x--;
+            bool b = true;
+            while(b == true) {
+                b = false;
+            }
+        }
+    }
+    return 0;
+    //return; //error
+}
+
+function : void randomCheck() {
+    bool b = 1;
+    int a = 2;
+    bool b = ::myX; // setting bool as a global int value
+    int c = false;
+    float d = ::myX;
+}
